@@ -36,8 +36,10 @@ const observeYoutubeComments = async () => {
 const hideComment = async (node) => {
    const commentText = await getCommentText(node);
    if (commentText) {
-      if (await isCommentNegative(commentText)) {
-         await createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-action-buttons-renderer #toolbar"));
+      if (true) {//await isCommentNegative(commentText)
+         console.log(node.querySelector("#content-text"));
+         node.querySelector("#content-text").style.display = "none";
+         createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-action-buttons-renderer #toolbar"));
       }
    }
 }
@@ -60,12 +62,15 @@ const isCommentNegative = async (commentText) =>
 
 
 
-
-const createActionButton = async (btnText, node) => {
+const createActionButton = (btnText, node) => {
    const originalYtbBtnCss = document.querySelector("yt-button-shape button").classList;
    const newButton = document.createElement('button');
    newButton.style.maxWidth = '22rem';
    newButton.innerHTML = btnText;
    newButton.classList = originalYtbBtnCss;
-   await node.appendChild(newButton);
+   node.appendChild(newButton);
+
+   newButton.addEventListener('click', (event) => {
+      event.target.closest('#main').querySelector("#content-text").style.display = "block";
+   });
 }
