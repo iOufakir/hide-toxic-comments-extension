@@ -2,11 +2,9 @@ window.addEventListener("load", () => {
    const commentsBlockInterval = setInterval(async () => {
       const comments = document.querySelectorAll("#contents ytd-comment-thread-renderer");
 
-      console.log(comments);
-
       if (comments && comments.length > 0) {
-         comments.forEach(async comment => {
-            //await hideComment(comment);
+         comments.forEach(async node => {
+            await hideComment(node);
          })
          await observeYoutubeComments();
 
@@ -22,7 +20,7 @@ const observeYoutubeComments = async () => {
          // Check if the childList has changed
          if (mutation.type === "childList") {
             mutation.addedNodes.forEach(async node => {
-               //await hideComment(node.querySelector("#content-text").innerText);
+               await hideComment(node);
             });
          }
       });
@@ -34,17 +32,18 @@ const observeYoutubeComments = async () => {
 };
 
 
-const hideComment = async (node) => {
-   const commentElement = await node.querySelector("yt-formatted-string#content-text");
-   if (commentElement) {
-      const commentText = await commentElement.innerText;
-      const response = await isCommentNegative(commentText);
 
-      if (response) {
-         node.style.display = "none";
+const hideComment = async (node) => {
+   const commentText = await getCommentText(node);
+   if (commentText) {
+      if (await isCommentNegative(commentText)) {
+         await createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-action-buttons-renderer #toolbar"));
       }
    }
 }
+
+const getCommentText = async (node) => await node.querySelector("yt-formatted-string#content-text")?.textContent?.trim();
+
 
 const isCommentNegative = async (commentText) =>
    await fetch('https://ujaq1oc2t9.execute-api.us-east-1.amazonaws.com/dev/users/1/comment/check', {
@@ -60,3 +59,13 @@ const isCommentNegative = async (commentText) =>
    }).then(response => response.json());
 
 
+
+
+const createActionButton = async (btnText, node) => {
+   const originalYtbBtnCss = document.querySelector("yt-button-shape button").classList;
+   const newButton = document.createElement('button');
+   newButton.style.maxWidth = '22rem';
+   newButton.innerHTML = btnText;
+   newButton.classList = originalYtbBtnCss;
+   await node.appendChild(newButton);
+}
