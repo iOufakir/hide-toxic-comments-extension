@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "Peaceful comments",
+    "version": "1.0",
+    "description": "Say goodbye to toxic comments, currently supporting Youtube and Twitter.",
+    "icons": {
+        "16": "images/icon-16.png",
+        "32": "images/icon-32.png",
+        "48": "images/icon-48.png",
+        "128": "images/icon-128.png"
+    },
+    "permissions": [
+        "webRequest"
+    ],
+    "host_permissions": [
+        "https://ujaq1oc2t9.execute-api.us-east-1.amazonaws.com/*"
+    ],
+    "content_scripts": [
+        {
+            "js": [
+                "scripts/youtube.js"
+            ],
+            "matches": [
+                "https://www.youtube.com/*",
+                "https://youtu.be/*"
+            ],
+            "run_at": "document_end"
+        }
+    ]
+}
