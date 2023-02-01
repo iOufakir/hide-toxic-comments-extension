@@ -22,7 +22,18 @@
             ],
             "matches": [
                 "https://www.youtube.com/*",
+                "https://youtube.com/*",
                 "https://youtu.be/*"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "js": [
+                "scripts/twitter.js"
+            ],
+            "matches": [
+                "https://www.twitter.com/*",
+                "https://twitter.com/*"
             ],
             "run_at": "document_end"
         }

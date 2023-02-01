@@ -36,7 +36,7 @@ const observeYoutubeComments = async () => {
 const hideComment = async (node) => {
    const commentText = await getCommentText(node);
    if (commentText) {
-      if (true) {//await isCommentNegative(commentText)
+      if (await isCommentNegative(commentText)) {
          console.log(node.querySelector("#content-text"));
          node.querySelector("#content-text").style.display = "none";
          createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-action-buttons-renderer #toolbar"));
@@ -44,7 +44,7 @@ const hideComment = async (node) => {
    }
 }
 
-const getCommentText = async (node) => await node.querySelector("yt-formatted-string#content-text")?.textContent?.trim();
+const getCommentText = async (node) => await node?.querySelector("yt-formatted-string#content-text")?.textContent?.trim();
 
 
 const isCommentNegative = async (commentText) =>
