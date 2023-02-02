@@ -34,8 +34,7 @@
             "matches": [
                 "https://www.twitter.com/*",
                 "https://twitter.com/*"
-            ],
-            "run_at": "document_end"
+            ]
         }
     ]
 }
