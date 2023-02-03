@@ -35,7 +35,7 @@ const observeYoutubeComments = async () => {
 
 const hideComment = async (node) => {
    const commentText = await getCommentText(node);
-   if (commentText) {
+   if (commentText && commentText.length > 1) {
       if (await isCommentNegative(commentText)) {
          console.log(node.querySelector("#content-text"));
          node.querySelector("#content-text").style.display = "none";
@@ -44,7 +44,7 @@ const hideComment = async (node) => {
    }
 }
 
-const getCommentText = async (node) => await node?.querySelector("yt-formatted-string#content-text")?.textContent?.trim();
+const getCommentText = async (node) => await node?.querySelector("yt-formatted-string#content-text")?.innerText?.trim();
 
 
 const isCommentNegative = async (commentText) =>

@@ -79,7 +79,7 @@ const hideComment = async (node) => {
    const commentText = getCommentText(node);
    const isCommentBlockDisplayed = node && window.getComputedStyle(node).display === 'block' && !node.querySelector('.show-tweet-comment-btn');
 
-   if (commentText && isCommentBlockDisplayed) {
+   if (commentText && commentText.length > 1 && isCommentBlockDisplayed) {
       if (await isCommentNegative(commentText)) {
          node.style.display = "none";
          createActionButton("Display Sensitive Comment", node);
