@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
       const comments = document.querySelectorAll("#contents ytd-comment-thread-renderer");
 
       if (comments && comments.length > 0) {
-         comments.forEach(async node => {
+         comments.forEach(async (node) => {
             await hideComment(node);
          })
          await observeYoutubeComments();
@@ -34,21 +34,22 @@ const observeYoutubeComments = async () => {
 
 
 const hideComment = async (node) => {
-   const commentText = await getCommentText(node);
-   if (commentText && commentText.length > 1) {
+   const commentText = getCommentText(node);
+   const isCommentBlockDisplayed = !node?.querySelector('.show-ytb-comment-btn');
+
+   if (commentText && commentText.length > 1 && isCommentBlockDisplayed) {
       if (await isCommentNegative(commentText)) {
-         console.log(node.querySelector("#content-text"));
          node.querySelector("#content-text").style.display = "none";
-         createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-action-buttons-renderer #toolbar"));
+         await createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-action-buttons-renderer #toolbar"));
       }
    }
 }
 
-const getCommentText = async (node) => await node?.querySelector("yt-formatted-string#content-text")?.innerText?.trim();
+const getCommentText = (node) => node?.querySelector("yt-formatted-string#content-text")?.innerText?.trim();
 
 
 const isCommentNegative = async (commentText) =>
-   await fetch('https://ujaq1oc2t9.execute-api.us-east-1.amazonaws.com/dev/users/1/comment/check', {
+   await fetch('http://localhost:8082/api/users/1/comment/check', {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -62,13 +63,13 @@ const isCommentNegative = async (commentText) =>
 
 
 
-const createActionButton = (btnText, node) => {
+const createActionButton = async (btnText, node) => {
    const originalYtbBtnCss = document.querySelector("yt-button-shape button").classList;
    const newButton = document.createElement('button');
    newButton.style.maxWidth = '22rem';
    newButton.innerHTML = btnText;
-   newButton.classList = originalYtbBtnCss;
-   node.appendChild(newButton);
+   newButton.classList = 'show-ytb-comment-btn ' + originalYtbBtnCss;
+   await node.appendChild(newButton);
 
    newButton.addEventListener('click', (event) => {
       event.target.closest('#main').querySelector("#content-text").style.display = "block";

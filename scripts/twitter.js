@@ -91,7 +91,7 @@ const getCommentText = (node) => node?.querySelector("div[data-testid='tweetText
 
 
 const isCommentNegative = async (commentText) =>
-   fetch('https://ujaq1oc2t9.execute-api.us-east-1.amazonaws.com/dev/users/1/comment/check', {
+   fetch('http://localhost:8082/api/users/1/comment/check', {
       method: 'POST',
       mode: 'cors',
       headers: {

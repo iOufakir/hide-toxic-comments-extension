@@ -13,7 +13,7 @@
         "webRequest"
     ],
     "host_permissions": [
-        "https://ujaq1oc2t9.execute-api.us-east-1.amazonaws.com/*"
+        "http://localhost:8082/*"
     ],
     "content_scripts": [
         {
