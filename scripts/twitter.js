@@ -1,6 +1,4 @@
-// window.addEventListener('popstate', async () => {
-//    await init();
-// });
+const commentSectionXPath = '//div/div/div[2]/main/div/div/div/div[1]/div/div[5]/div/section';
 
 let observer = null;
 window.addEventListener("load", async () => {
@@ -9,38 +7,19 @@ window.addEventListener("load", async () => {
 
 
 const init = async () => {
-   const commentsBlockInterval = setInterval(async () => {
-      const commentSection = await getElementByXpath("//div[2]/main/div/div/div/div[1]/div/section/div/div");
+   // Detect when user click on a specific tweet (SPA)
+   setInterval(async () => {
+      const commentSection = await getElementByXpath(commentSectionXPath);
       if (commentSection) {
-         await loopAndHideComments(commentSection);
-         clearInterval(commentsBlockInterval);
+         await iterateAndHideComments(commentSection);
       }
-   }, 1000);
-
-
-   setTimeout(() => {
-      let previousStyles = null;
-      // Detect when user click on a specific tweet (SPA)
-      setInterval(async () => {
-         const commentSection = await getElementByXpath("//div[2]/main/div/div/div/div[1]/div/section/div/div");
-         if (commentSection) {
-            const currentStyles = await commentSection.style;
-
-            // Styles changed after clicking on specific tweet
-            if (previousStyles !== currentStyles) {
-               previousStyles = currentStyles;
-               await loopAndHideComments(commentSection);
-               //console.info('New Tweet!');
-            }
-         }
-      }, 500);
-   }, 4000);
+   }, 500);
 }
 
-const loopAndHideComments = async (commentSection) => {
+const iterateAndHideComments = async (commentSection) => {
    const comments = await commentSection.querySelectorAll("div[data-testid='tweetText']");
    // Starting from index 1, bcs the post also use article with the same data test id.
-   if (comments && comments.length > 1) {
+   if (comments && comments.length > 0) {
       for (let i = 1; i < comments.length; i++) {
          const comment = await comments[i];
          await hideComment(comment);
@@ -77,9 +56,8 @@ getElementByXpath = (path) =>
 
 const hideComment = async (node) => {
    const commentText = getCommentText(node);
-   const isCommentBlockDisplayed = node && window.getComputedStyle(node).display === 'block' && !node.querySelector('.show-tweet-comment-btn');
-
-   if (commentText && commentText.length > 1 && isCommentBlockDisplayed) {
+   const isShowTweetBtnDisplayed = node.parentNode.querySelector('.btn-show-tweet');
+   if (commentText && commentText.length > 0 && !isShowTweetBtnDisplayed) {
       if (await isCommentNegative(commentText)) {
          node.style.display = "none";
          createActionButton("Display Sensitive Comment", node);
@@ -104,6 +82,18 @@ const isCommentNegative = async (commentText) =>
    }).then(response => response.json());
 
 
+const createActionButton = (btnText, node) => {
+   const newButton = buildBtnStyle();
+   newButton.innerHTML = btnText;
+   newButton.classList = "btn-show-tweet";
+   node.parentNode.appendChild(newButton);
+
+   newButton.addEventListener('click', (event) => {
+      node.style.display = "block";
+   });
+}
+
+
 const buildBtnStyle = () => {
    const newButton = document.createElement('button');
    newButton.style.maxWidth = '16rem';
@@ -122,15 +112,4 @@ const buildBtnStyle = () => {
    newButton.style.border = 0;
    newButton.style.borderRadius = '2.8rem';
    return newButton;
-}
-
-const createActionButton = (btnText, node) => {
-   const newButton = buildBtnStyle();
-   newButton.innerHTML = btnText;
-   newButton.classList = "show-tweet-comment-btn ";
-   node.parentNode.appendChild(newButton);
-
-   newButton.addEventListener('click', (event) => {
-      node.style.display = "block";
-   });
 }
