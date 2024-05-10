@@ -36,16 +36,15 @@ const observeYoutubeComments = async () => {
 const hideComment = async (node) => {
    const commentText = getCommentText(node);
    const isCommentBlockDisplayed = !node?.querySelector('.show-ytb-comment-btn');
-
    if (commentText && commentText.length > 1 && isCommentBlockDisplayed) {
       if (await isCommentNegative(commentText)) {
          node.querySelector("#content-text").style.display = "none";
-         await createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-action-buttons-renderer #toolbar"));
+         await createActionButton("Display Sensitive Comment", node.querySelector("ytd-comment-engagement-bar div#toolbar"));
       }
    }
 }
 
-const getCommentText = (node) => node?.querySelector("yt-formatted-string#content-text")?.innerText?.trim();
+const getCommentText = (node) => node?.querySelector("yt-attributed-string#content-text")?.innerText?.trim();
 
 
 const isCommentNegative = async (commentText) =>
