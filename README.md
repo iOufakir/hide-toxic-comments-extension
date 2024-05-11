@@ -5,7 +5,10 @@ Say goodbye to toxic comments, currently supporting Youtube and Twitter. (Chrome
 The project requires a back-end service in order to check if the target text is offensive or not.
 
 ### Backend project
-- In another Github repository developed using SpringBoot; OpenAI API was used to check if the comment is negative or not!
+
+- There are many solutions you can use to check if a comment is negative, such as sentiment analysis algorithms or utilizing AI.
+
+In another Github repository developed using SpringBoot; OpenAI API was used to check if the comment is negative or not!
 
 Here is the code in `chrome-extention-openai` branch:
 
