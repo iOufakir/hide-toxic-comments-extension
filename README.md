@@ -1,9 +1,16 @@
 # Hide-Toxic-Comments-Chrome-extension
+
 Say goodbye to toxic comments, currently supporting Youtube and Twitter. (Chrome extension)
 
 The project requires a back-end service in order to check if the target text is offensive or not.
 
-(In another Github repository developed using SpringBoot, OpenAI API was used)
+### Backend project
+- In another Github repository developed using SpringBoot; OpenAI API was used to check if the comment is negative or not!
+
+Here is the code in `chrome-extention-openai` branch:
+
+https://github.com/iOufakir/OpenAI-And-Twitter/tree/chrome-extention-openai
+
 
 ### Example:
 
