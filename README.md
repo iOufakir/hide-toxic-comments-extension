@@ -1,8 +1,21 @@
 # Hide-Toxic-Comments-Chrome-extension
 
-Say goodbye to toxic comments, currently supporting Youtube and Twitter. (Chrome extension)
+## Overview
+Say goodbye to toxic comments, currently supporting **Youtube** and **Twitter**.
+
+This project is a Chrome extension designed to enhance the user experience by hiding toxic comments using AI.
 
 The project requires a back-end service in order to check if the target text is offensive or not.
+
+## Installation
+
+To install the extension:
+
+1. Download the extension files from the repository.
+2. Open the Chrome browser.
+3. Navigate to `chrome://extensions/`.
+4. Enable Developer mode.
+5. Click on "Load unpacked" and select the downloaded extension files.
 
 ### Backend project
 
